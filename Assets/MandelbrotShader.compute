@@ -1,0 +1,154 @@
+﻿#include "Assets/lib.compute"
+
+#pragma kernel CSMain
+
+const static float MIN_INTENSITY_OUTER_UNIT_CIRCLE = 0.01f;
+
+RWTexture2D<float2> Result;
+RWTexture2D<float4> Color;
+Texture2D<float2> prevResult;
+Texture2D<float2> Position;
+
+
+float bound, iterationVal, iterationVal_next, bound_exponent;
+uint width;
+
+
+uint getIndex(uint2 id){
+    return id.x + id.y*width;
+}
+
+float2 mandelbrot(float2 z, float2 c){
+    return c_add( c_mul(z,z), c);
+}
+//go R->G->B->R in arc dimension
+float4 colorCircle(float angle){
+    angle += pi;
+    if(angle >= (2.0f*pi))
+        angle -= (2.0f*pi);
+    angle -= (2.0f*pi) * (int)(angle/(2.0f*pi)); // mod 2pi
+    angle *= (1.5f / pi);
+    float intp = angle - (int)angle;
+    intp *= pi/2.0f;
+    float cos_val = cos(intp);
+    float sin_val = sin(intp);
+    //strech for full color intensity
+    if(cos_val<=sin_val){
+        cos_val /= sin_val;
+        sin_val = 1.0f;
+    }
+    else{
+        sin_val /= cos_val;
+        cos_val = 1.0f;
+    }
+    //decide color
+    switch( ((uint)angle) % 3 )
+    {
+        case 0:
+            return float4(  cos_val,    sin_val,    0,  0);
+        case 1:
+            return float4(  0,  cos_val,    sin_val,    0);
+        case 2:
+            return float4(  sin_val,    0,  cos_val,    0);
+        default:
+            return float4( 0, 0, 0, 0);
+    }  
+}
+
+
+float4 scaleXYZ(float4 val, float scale){
+    val.x *= scale;
+    val.y *= scale;
+    val.z *= scale;
+    return val;
+}
+float4 addXYZ(float4 col1, float4 col2){
+    return float4(
+        col1.y + col2.y,
+        col1.z + col2.z,
+        col1.w + col2.w,
+        0
+        );
+}
+float interpolateFloatLinear(float val, float left, float right){
+    return (1-val)*left + val*right;
+}
+float4 interpolateColorRGBLinear(float val, float4 ColorLeft, float4 ColorRight){
+    return 
+        addXYZ( scaleXYZ(ColorLeft, 1-val), scaleXYZ(ColorRight, val) ); 
+}
+
+float4 innerBoundsColoring(float2 polarCoord, float exeedingIntensity){
+    if(polarCoord.x <= 1){
+        return scaleXYZ( colorCircle(polarCoord.y), polarCoord.x ); 
+    }
+    if(polarCoord.x <= 2){
+        return scaleXYZ(
+            colorCircle(polarCoord.y),
+            interpolateFloatLinear(polarCoord.x-1.0f, 1.0f, MIN_INTENSITY_OUTER_UNIT_CIRCLE) 
+            );
+    }
+    return scaleXYZ(
+        colorCircle(polarCoord.y),
+        interpolateFloatLinear(polarCoord.x-2.0f, MIN_INTENSITY_OUTER_UNIT_CIRCLE, exeedingIntensity)
+        );
+}
+float getIntpVal_exCol(float z_len, float minimalExeeding, float maximalExeeding){
+    float bound_exponent_inverse = 0.5f/(bound_exponent);
+    minimalExeeding = pow(minimalExeeding, bound_exponent_inverse);
+    maximalExeeding = pow(maximalExeeding, bound_exponent_inverse);
+    z_len = pow(z_len, bound_exponent_inverse);
+    return (z_len - minimalExeeding) / (maximalExeeding-minimalExeeding);
+}
+float4 getColor_exCol(float angle, float intp){
+    float color_help = ( sin(angle*(2.0f-intp) + (pi*1.5f))  +  1.0f )/2.0f;
+    color_help *= 0.5f;
+    return float4(color_help*(1/1.3f) ,0,color_help,0);
+    
+}
+float4 exeedingValueColoring(float2 polarCoord, float minimalExeeding, float maximalExeeding){
+    float intp = getIntpVal_exCol(polarCoord.x, minimalExeeding, maximalExeeding);
+    float4 color = getColor_exCol(polarCoord.y ,intp);
+    intp = interpolateFloatLinear(1-intp, iterationVal, iterationVal_next);
+    return
+        scaleXYZ(
+            color,
+            intp);
+}
+void markAsExceeded(uint3 id){
+    Result[id.xy] = float2(2.0f * bound,0);
+}
+bool isExeeded(float2 val){
+    return val.x == 2.0f * bound;
+}
+float2 skalarMult(float2 val, float skalar){
+    val.x *= skalar;
+    val.y *= skalar;
+    return val;
+}
+
+[numthreads(8,8,1)]
+void CSMain (uint3 id : SV_DispatchThreadID)
+{
+    //check if value exceeded bounds in a prev. Iteration
+    float2 z = prevResult[id.xy];
+    if( isExeeded(z) )
+        return;   
+    //calc
+    float2 pos = Position[id.xy];
+    float2 z_pow2 = c_mul(z, z);
+    float2 res = c_add(z_pow2, pos);
+    if(res.x*res.x + res.y*res.y >= bound*bound){
+        markAsExceeded(id);
+        float2 z_pow2_pol = c_pol(z_pow2);
+        Color[id.xy] = exeedingValueColoring(
+            z_pow2_pol,
+            bound + z_pow2_pol.x-c_abs(res),
+            bound*bound + z_pow2_pol.x-c_abs(res)
+        );
+    }
+    else{
+        Color[id.xy] = float4(0, 0, 0, 0);
+        Result[id.xy] = res;
+    }
+}

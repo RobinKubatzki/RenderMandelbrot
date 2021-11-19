@@ -1,0 +1,157 @@
+﻿// Each #kernel tells which function to compile; you can have many kernels
+static const float pi = 3.14159265;
+static const float e = 2.71828183;
+
+float2 c_add(float2 c1, float2 c2)
+{
+	float a = c1.x;
+	float b = c1.y;
+	float c = c2.x;
+	float d = c2.y;
+	return float2(a + c, b + d);
+}
+float2 c_sub(float2 c1, float2 c2)
+{
+	float a = c1.x;
+	float b = c1.y;
+	float c = c2.x;
+	float d = c2.y;
+	return float2(a - c, b - d);
+}
+float2 c_mul(float2 c1, float2 c2)
+{
+	float a = c1.x;
+	float b = c1.y;
+	float c = c2.x;
+	float d = c2.y;
+	return float2(a*c - b*d, b*c + a*d);
+}
+float2 c_div(float2 c1, float2 c2)
+{
+	float a = c1.x;
+	float b = c1.y;
+	float c = c2.x;
+	float d = c2.y;
+	float real = (a*c + b*d) / (c*c + d*d);
+	float imag = (b*c - a*d) / (c*c + d*d);
+	return float2(real, imag);
+}
+float c_abs(float2 c)
+{
+	return sqrt(c.x*c.x + c.y*c.y);
+}
+float2 c_pol(float2 c)
+{
+	float a = c.x;
+	float b = c.y;
+	float z = c_abs(c);
+	float f = atan2(b, a);
+	return float2(z, f);
+}
+float2 c_rec(float2 c)
+{
+	float z = abs(c.x);
+	float f = c.y;
+	float a = z * cos(f);
+	float b = z * sin(f);
+	return float2(a, b);
+}
+float2 c_pow(float2 base, float2 exp)
+{
+	float2 b = c_pol(base);
+	float r = b.x;
+	float f = b.y;
+	float c = exp.x;
+	float d = exp.y;
+	float z = pow(r, c) * pow(e, -d * f);
+	float fi = d * log(r) + c * f;
+	float2 rpol = float2(z, fi);
+	return c_rec(rpol);
+}
+float2 c_log(float2 c){
+    float2 pol = c_pol(c);
+    float2 res = pow(float2(e,0),float2(0,pol.y));
+    res = c_mul(res,float2(log(pol.x),0));
+    return res;
+}
+float2 mandel_res(float2 z, float2 c){
+    z= c_mul(z, z);
+    z= c_add(z,c);
+    return float2(z.x, z.y);
+}
+float2 mandel_invers(float2 z, float2 c){
+	z = c_pol(z+c);
+	z.x = sqrt(z.x);
+	return float2(
+		cos((z.y/2.0f)) * z.x,
+		sin((z.y/2.0f)) * z.x
+		);  
+}
+
+
+//scale linear [R.x,R.y]->[0,1]
+float scale(float z, float2 R){
+	return (z-R.x)/(R.y-R.x);
+}
+//scale linear [R.x,R.y]^2 -> [0,1]^2
+float2 scale(float4 z, float2 R){
+	z.x = scale(z.x, R);
+	z.y = scale(z.y, R);
+	return float2(z.x, z.y);
+}
+//scale linear [0,1]->[R.x,R.y]
+float inverse_scale(float z, float2 R){
+	return (z*(R.y-R.x))+R.x;
+}
+float2 inverse_scale(float4 z, float2 R){
+	z.x = inverse_scale(z.x, R);
+	z.y = inverse_scale(z.y, R);
+	return float2(z.x, z.y);
+}
+float4 portToColCircle(float len, float angle, float colLim){
+	float2 c = float2(len, angle);
+	c.x = scale(c.x, float2(0, colLim) );
+	if(c.x>1){
+		c.x = 1/c.x;
+	}
+	c.y += pi;
+	c.y *= 3.0f/4.0f;	
+	switch((int)(2*c.y / pi)){
+		case 0:
+			return float4(
+				cos(c.y)*c.x,
+				sin(c.y)*c.x,
+				0,
+				0);
+		case 1:
+			c.y -= (1/2.0f)*pi;
+			return float4(
+				0,
+				cos(c.y)*c.x,
+				sin(c.y)*c.x,
+				0);
+		case 2:
+			c.y -= pi;
+			return float4(
+				sin(c.y)*c.x,
+				0,
+				cos(c.y)*c.x,
+				0);	
+		default:
+			return float4(0,0,0,0);		
+	};
+}
+float4 portToColCircle(float2 res, float colLim){
+	float2 c = c_pol(res);
+	return portToColCircle(c.x, c.y, colLim);
+}
+
+float2 getPos(uint3 id, int width, int height, float2 start, float zoom){
+	float2 pos = float2(
+		(id.x/(float)width - 0.5f),
+		(id.y/(float)height - 0.5f)
+	);
+	pos *= zoom;
+	pos += start;
+	return pos;
+}

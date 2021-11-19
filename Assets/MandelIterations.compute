@@ -1,0 +1,81 @@
+﻿#include "Assets/lib.compute"
+
+// Each #kernel tells which function to compile; you can have many kernels
+#pragma kernel CSMain
+#pragma kernel Init
+//#pragma kernel Init
+
+// Create a RenderTexture with enableRandomWrite flag and set it
+// with cs.SetTexture
+RWTexture2D<float4> Result_col;
+RWTexture2D<float2> Result_out;
+RWTexture2D<uint> ItCnt_out;
+Texture2D<float2> Result_in;
+Texture2D<uint>  ItCnt_in;
+int width, height;
+float zoom;
+float4 colorRange, start;
+
+
+static const float modul = 25.0f;
+float getItAngle(int i){
+	float res = i / modul;
+	return res - (int)res -0.5;
+}
+
+void interpolatedColoring(uint3 id){
+	float2 c_val = getPos(id, width, height, start.xy, zoom);
+    uint i = ItCnt_in[id.xy];
+    float2 res = Result_in[id.xy];
+    //do calc. if input is valid (valid means that the value of the mandelbrot function did not exeed the range of float range)
+    if( !isinf(res.x) && !isinf(res.y) ){
+        //calc and update iteration
+        res = mandel_res(res, c_val);
+        Result_out[id.xy] = res;
+    
+        if(res.x*res.x + res.y*res.y < 4) {
+            //increment in bounds counter
+            i++;
+            ItCnt_out[id.xy] = i;
+            Result_col[id.xy] = portToColCircle(res, 2);
+        } 
+        else {
+            //interpol between fix and iteration coloring
+            res = c_pol(res);
+            float4 col = portToColCircle(res.x, res.y, 2);
+            float intp = (2.0f / res.x);
+            Result_col[id.xy] =  intp * col 
+                            +  (1-intp) * portToColCircle(1, getItAngle(i) * (pi * 2), 1);
+        }
+    }
+    else{
+        //fix coloring
+        Result_col[id.xy] = portToColCircle(1, getItAngle(i) * (pi * 2), 1);
+    }
+    
+}
+
+[numthreads(8,8,1)]
+void Init (uint3 id : SV_DispatchThreadID){
+    float2 pos = getPos(id, width, height, start.xy, zoom);
+    Result_out[id.xy] = pos;
+
+	Result_col[id.xy] = portToColCircle(float2(pos.x,pos.y), colorRange.y);
+	ItCnt_out[id.xy] = 0;
+}
+
+[numthreads(8,8,1)]
+void CSMain (uint3 id : SV_DispatchThreadID)
+{
+	interpolatedColoring(id);	
+
+/*
+    //check if color is already set ( value exceeded in a prev. Iteration )
+    float2 val = Result_in[id.xy];
+    if(isinf(val))
+        return;
+    //calc value
+
+    val = mandel_res(val, )
+*/
+}
