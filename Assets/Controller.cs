@@ -125,7 +125,6 @@ public class Controller : MonoBehaviour
 
     void Start()
     {
-        //Application.targetFrameRate = targetFrameRate;
         initData();
         overlay.material.SetTexture("_MainTex", mandelBrot);
         if(debug_TexSettings){
