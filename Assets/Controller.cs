@@ -14,7 +14,7 @@ public class Controller : MonoBehaviour
     //boundExponent: probably best to take a integer
     public float zoom = 2, boundExponent = 4; 
     public int colorPeriod = 10, iterationCnt = 0;
-    public int targetFrameRate = 60, pixelSampleSize = 4;
+    public int pixelSampleSize = 4;
 
 
     private RenderTexture mandelBrot, position, positionLength, mandelBrot_prevResult, mandelBrot_Result;
