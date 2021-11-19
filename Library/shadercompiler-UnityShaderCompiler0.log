@@ -1,26 +1,2 @@
 Base path: '/home/robinkubatzki/Unity/Hub/Editor/2019.4.22f1/Editor/Data', plugins path '/home/robinkubatzki/Unity/Hub/Editor/2019.4.22f1/Editor/Data/PlaybackEngines'
 Cmd: initializeCompiler
-Cmd: preprocessCompute
-  insize=5649 outsize=5648 ok=1
-Cmd: preprocessCompute
-  insize=5639 outsize=5638 ok=1
-Cmd: compileComputeKernel
-  error: 1 plat 15 at MandelbrotShader.compute(103): pow(f, e) will not work for negative f, use abs(f) or conditionally handle negative values if you expect them
-  error: 1 plat 15 at MandelbrotShader.compute(104): pow(f, e) will not work for negative f, use abs(f) or conditionally handle negative values if you expect them
-  api=15 insize=5638 outsize=5298 ok=1
-Cmd: preprocessCompute
-  insize=5641 outsize=5640 ok=1
-Cmd: preprocessCompute
-  insize=854 outsize=853 ok=1
-Cmd: compileComputeKernel
-  api=15 insize=853 outsize=1531 ok=1
-Cmd: preprocessCompute
-  insize=4381 outsize=4380 ok=1
-Cmd: compileComputeKernel
-  error: 1 plat 15 at MandelbrotShader.compute(98): pow(f, e) will not work for negative f, use abs(f) or conditionally handle negative values if you expect them
-  error: 1 plat 15 at MandelbrotShader.compute(99): pow(f, e) will not work for negative f, use abs(f) or conditionally handle negative values if you expect them
-  api=15 insize=4380 outsize=5031 ok=1
-Cmd: preprocessCompute
-  insize=712 outsize=711 ok=1
-Cmd: compileComputeKernel
-  api=15 insize=711 outsize=1531 ok=1
