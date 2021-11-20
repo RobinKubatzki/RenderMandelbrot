@@ -130,7 +130,6 @@ float2 skalarMult(float2 val, float skalar){
 [numthreads(8,8,1)]
 void CSMain (uint3 id : SV_DispatchThreadID)
 {
-    //check if value exceeded bounds in a prev. Iteration
     float2 z = prevResult[id.xy];
     if( isExeeded(z) )
         return;   
@@ -138,7 +137,7 @@ void CSMain (uint3 id : SV_DispatchThreadID)
     float2 pos = Position[id.xy];
     float2 z_pow2 = c_mul(z, z);
     float2 res = c_add(z_pow2, pos);
-    if(res.x*res.x + res.y*res.y >= bound*bound){
+    if(res.x*res.x + res.y*res.y >= bound*bound){//exeeding condition
         markAsExceeded(id);
         float2 z_pow2_pol = c_pol(z_pow2);
         Color[id.xy] = exeedingValueColoring(

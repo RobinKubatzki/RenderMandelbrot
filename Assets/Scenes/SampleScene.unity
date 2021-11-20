@@ -337,10 +337,9 @@ MonoBehaviour:
   initShad: {fileID: 7200000, guid: a95358bb1627d531cb4eed6a21512ae8, type: 3}
   viewCenter: {x: 0, y: 0}
   zoom: 4
-  boundExponent: 4
+  boundExponent: 6
   colorPeriod: 32
   iterationCnt: 0
-  targetFrameRate: 20
   pixelSampleSize: 2
 --- !u!4 &880626248
 Transform:

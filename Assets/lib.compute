@@ -2,6 +2,7 @@
 static const float pi = 3.14159265;
 static const float e = 2.71828183;
 
+
 float2 c_add(float2 c1, float2 c2)
 {
 	float a = c1.x;
