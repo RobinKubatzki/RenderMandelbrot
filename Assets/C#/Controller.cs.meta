@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: a31a0ea4658015a6f973d1b559b13cb1
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences:
+  - overlay: {instanceID: 0}
+  - stateDisplay: {instanceID: 0}
+  - calcShad: {instanceID: 0}
+  - initShad: {instanceID: 0}
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

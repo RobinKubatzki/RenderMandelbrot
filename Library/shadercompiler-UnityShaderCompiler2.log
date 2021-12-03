@@ -1,16 +1,4 @@
 Base path: '/home/robinkubatzki/Unity/Hub/Editor/2019.4.22f1/Editor/Data', plugins path '/home/robinkubatzki/Unity/Hub/Editor/2019.4.22f1/Editor/Data/PlaybackEngines'
 Cmd: initializeCompiler
-Cmd: compileComputeKernel
-  error: 2 plat 18 at (0): Vulkan: double precision is not supported.
-  error: 2 plat 18 at (34): '' :  syntax error, unexpected IDENTIFIER
-  error: 1 plat 18 at MandelbrotShader.compute(98): pow(f, e) will not work for negative f, use abs(f) or conditionally handle negative values if you expect them
-  error: 1 plat 18 at MandelbrotShader.compute(99): pow(f, e) will not work for negative f, use abs(f) or conditionally handle negative values if you expect them
-  api=18 insize=4380 outsize=0 ok=0
-Cmd: compileComputeKernel
-  api=15 insize=711 outsize=1531 ok=1
-Cmd: compileComputeKernel
-  error: 1 plat 18 at MandelbrotShader.compute(98): pow(f, e) will not work for negative f, use abs(f) or conditionally handle negative values if you expect them
-  error: 1 plat 18 at MandelbrotShader.compute(99): pow(f, e) will not work for negative f, use abs(f) or conditionally handle negative values if you expect them
-  api=18 insize=4380 outsize=11224 ok=1
-Cmd: compileComputeKernel
-  api=18 insize=711 outsize=2472 ok=1
+
+Quitting shader compiler process
