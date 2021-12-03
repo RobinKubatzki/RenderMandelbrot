@@ -122,6 +122,7 @@ public class Controller : MonoBehaviour
 
     void Start()
     {
+        Debug.Log("start controller");
         initSettings();
         initData();
         overlay.material.SetTexture("_MainTex", mandelBrot);
