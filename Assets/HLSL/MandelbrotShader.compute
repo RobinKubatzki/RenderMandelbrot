@@ -130,7 +130,7 @@ float2 skalarMult(float2 val, float skalar){
 [numthreads(8,8,1)]
 void CSMain (uint3 id : SV_DispatchThreadID)
 {
-    float2 z = prevResult[id.xy];
+    float2 z = Result.Load(id.xy);//prevResult[id.xy];
     if( isExeeded(z) )
         return;   
     //calc
