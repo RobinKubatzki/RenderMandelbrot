@@ -1,10 +1,37 @@
 Base path: '/home/robinkubatzki/Unity/Hub/Editor/2019.4.22f1/Editor/Data', plugins path '/home/robinkubatzki/Unity/Hub/Editor/2019.4.22f1/Editor/Data/PlaybackEngines'
 Cmd: initializeCompiler
 Cmd: preprocessCompute
-  insize=4369 outsize=4368 ok=1
+  insize=4407 outsize=4406 ok=1
 Cmd: preprocessCompute
-  insize=724 outsize=723 ok=1
+  insize=4412 outsize=4411 ok=1
 Cmd: preprocessCompute
-  insize=4369 outsize=4368 ok=1
+  insize=4418 outsize=4417 ok=1
 Cmd: preprocessCompute
-  insize=724 outsize=723 ok=1
+  insize=4424 outsize=4423 ok=1
+Cmd: compileComputeKernel
+  error: 1 plat 15 at MandelbrotShader.compute(3): 'target' : unknown pragma ignored
+  error: 2 plat 15 at MandelbrotShader.compute(9): syntax error: unexpected token 'inout'
+  api=15 insize=4423 outsize=0 ok=0
+Cmd: preprocessCompute
+  insize=4418 outsize=4417 ok=1
+Cmd: compileComputeKernel
+  error: 1 plat 15 at MandelbrotShader.compute(3): 'target' : unknown pragma ignored
+  error: 1 plat 15 at MandelbrotShader.compute(100): pow(f, e) will not work for negative f, use abs(f) or conditionally handle negative values if you expect them
+  error: 1 plat 15 at MandelbrotShader.compute(101): pow(f, e) will not work for negative f, use abs(f) or conditionally handle negative values if you expect them
+  api=15 insize=4417 outsize=4881 ok=1
+Cmd: preprocessCompute
+  insize=4472 outsize=4471 ok=1
+Cmd: compileComputeKernel
+  error: 1 plat 15 at MandelbrotShader.compute(3): 'target' : unknown pragma ignored
+  error: 1 plat 15 at MandelbrotShader.compute(100): pow(f, e) will not work for negative f, use abs(f) or conditionally handle negative values if you expect them
+  error: 1 plat 15 at MandelbrotShader.compute(101): pow(f, e) will not work for negative f, use abs(f) or conditionally handle negative values if you expect them
+  api=15 insize=4471 outsize=4534 ok=1
+Cmd: preprocessCompute
+  insize=4389 outsize=4388 ok=1
+Cmd: preprocessCompute
+  insize=4390 outsize=4389 ok=1
+Cmd: compileComputeKernel
+  error: 1 plat 15 at MandelbrotShader.compute(5): 'target' : unknown pragma ignored
+  error: 1 plat 15 at MandelbrotShader.compute(100): pow(f, e) will not work for negative f, use abs(f) or conditionally handle negative values if you expect them
+  error: 1 plat 15 at MandelbrotShader.compute(101): pow(f, e) will not work for negative f, use abs(f) or conditionally handle negative values if you expect them
+  api=15 insize=4389 outsize=4955 ok=1

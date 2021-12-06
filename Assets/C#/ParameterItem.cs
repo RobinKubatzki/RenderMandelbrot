@@ -11,13 +11,16 @@ public class ParameterItem<T> : ParameterManager
     private T data;
     private string name, detail;
 
-    private UnityAction<Controller, T> setOnController;
-    public ParameterItem(string name, string detail, UnityAction<Controller, T> setOnController){
+    //private UnityAction<Controller, T> setOnController;
+    [Serializable]
+    public delegate void SetOnController(Controller controller, T val);
+    private SetOnController setOnController;
+    public ParameterItem(string name, string detail, SetOnController setOnController){
         this.name = name;
         this.detail = detail;
         this.setOnController = setOnController;
     }
-    public ParameterItem(string name, string detail, UnityAction<Controller, T> setOnController, T data) : this(name, detail, setOnController){
+    public ParameterItem(string name, string detail, SetOnController setOnController, T data) : this(name, detail, setOnController){
         this.data = data;
     }
     public string getDetail(){

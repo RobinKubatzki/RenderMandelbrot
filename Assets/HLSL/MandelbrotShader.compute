@@ -1,6 +1,8 @@
 ﻿#include "Assets/HLSL/lib.compute"
 
-#pragma kernel CSMain
+
+#pragma kernel CSMain 
+#pragma target 5.0
 
 const static float MIN_INTENSITY_OUTER_UNIT_CIRCLE = 0.01f;
 

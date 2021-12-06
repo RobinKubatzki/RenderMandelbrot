@@ -1,4 +1,15 @@
 Base path: '/home/robinkubatzki/Unity/Hub/Editor/2019.4.22f1/Editor/Data', plugins path '/home/robinkubatzki/Unity/Hub/Editor/2019.4.22f1/Editor/Data/PlaybackEngines'
 Cmd: initializeCompiler
-
-Quitting shader compiler process
+Cmd: compileComputeKernel
+  error: 1 plat 18 at MandelbrotShader.compute(3): 'target' : unknown pragma ignored
+  error: 2 plat 18 at MandelbrotShader.compute(9): redefinition of 'Result'
+  api=18 insize=4411 outsize=0 ok=0
+Cmd: compileComputeKernel
+  error: 1 plat 18 at MandelbrotShader.compute(3): 'target' : unknown pragma ignored
+  error: 2 plat 18 at MandelbrotShader.compute(9): syntax error: unexpected token 'inout'
+  api=18 insize=4423 outsize=0 ok=0
+Cmd: compileComputeKernel
+  error: 1 plat 18 at MandelbrotShader.compute(5): 'target' : unknown pragma ignored
+  error: 1 plat 18 at MandelbrotShader.compute(100): pow(f, e) will not work for negative f, use abs(f) or conditionally handle negative values if you expect them
+  error: 1 plat 18 at MandelbrotShader.compute(101): pow(f, e) will not work for negative f, use abs(f) or conditionally handle negative values if you expect them
+  api=18 insize=4389 outsize=10722 ok=1

@@ -94,11 +94,13 @@ public class SettingsManager : MonoBehaviour
         } 
     }
     public static void applieSettings(Controller ctrl){
-        if(data == null){
+        /*if(data == null){
             loadData();
-        }
+        }*/
+        loadData();
         foreach(ParameterDependencies item in data.getParametersDependencies(null))
         {
+            Debug.Log("set on controller: parameterName = " + item.paramMngr.getName());
             item.paramMngr.applieParameter(ctrl);
         }   
     }

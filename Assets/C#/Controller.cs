@@ -169,7 +169,6 @@ public class Controller : MonoBehaviour
         timeCnt += Time.deltaTime;
         if(++frameCnt >= targetFps){
             float fps =  (float)frameCnt/timeCnt;
-            Debug.Log(fps);
             calcPerFrame = (int)((fps/targetFps) * (float)calcPerFrame);
             timeCnt = 0;
             frameCnt = 0;
