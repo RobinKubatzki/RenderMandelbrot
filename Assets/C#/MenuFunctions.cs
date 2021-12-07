@@ -11,6 +11,9 @@ public class MenuFunctions : MonoBehaviour
     public void settingsMenu(){
         SceneManager.LoadScene(2);
     }
+    public void helpMenu(){
+        SceneManager.LoadScene(3);
+    }
     static Vector2 pivotAbove = new Vector2(1,0), pivotBelow = new Vector2(1,1);
 
     void setAncorAbove(RectTransform rect){

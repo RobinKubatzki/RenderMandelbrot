@@ -19,3 +19,7 @@ Cmd: compileComputeKernel
   error: 1 plat 18 at MandelbrotShader.compute(100): pow(f, e) will not work for negative f, use abs(f) or conditionally handle negative values if you expect them
   error: 1 plat 18 at MandelbrotShader.compute(101): pow(f, e) will not work for negative f, use abs(f) or conditionally handle negative values if you expect them
   api=18 insize=4471 outsize=9989 ok=1
+Cmd: compileComputeKernel
+  error: 1 plat 15 at MandelbrotShader.compute(99): pow(f, e) will not work for negative f, use abs(f) or conditionally handle negative values if you expect them
+  error: 1 plat 15 at MandelbrotShader.compute(100): pow(f, e) will not work for negative f, use abs(f) or conditionally handle negative values if you expect them
+  api=15 insize=4345 outsize=4955 ok=1

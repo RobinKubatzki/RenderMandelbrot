@@ -35,3 +35,21 @@ Cmd: compileComputeKernel
   error: 1 plat 15 at MandelbrotShader.compute(100): pow(f, e) will not work for negative f, use abs(f) or conditionally handle negative values if you expect them
   error: 1 plat 15 at MandelbrotShader.compute(101): pow(f, e) will not work for negative f, use abs(f) or conditionally handle negative values if you expect them
   api=15 insize=4389 outsize=4955 ok=1
+Cmd: preprocessCompute
+  insize=4386 outsize=4385 ok=1
+Cmd: compileComputeKernel
+  error: 1 plat 15 at MandelbrotShader.compute(5): 'target' : unknown pragma ignored
+  error: 1 plat 15 at MandelbrotShader.compute(100): pow(f, e) will not work for negative f, use abs(f) or conditionally handle negative values if you expect them
+  error: 1 plat 15 at MandelbrotShader.compute(101): pow(f, e) will not work for negative f, use abs(f) or conditionally handle negative values if you expect them
+  api=15 insize=4385 outsize=4955 ok=1
+Cmd: preprocessCompute
+  insize=4366 outsize=4365 ok=1
+Cmd: compileComputeKernel
+  error: 1 plat 15 at MandelbrotShader.compute(5): 'target' : unknown pragma ignored
+  error: 1 plat 15 at MandelbrotShader.compute(100): pow(f, e) will not work for negative f, use abs(f) or conditionally handle negative values if you expect them
+  error: 1 plat 15 at MandelbrotShader.compute(101): pow(f, e) will not work for negative f, use abs(f) or conditionally handle negative values if you expect them
+  api=15 insize=4365 outsize=4955 ok=1
+Cmd: preprocessCompute
+  insize=4366 outsize=4365 ok=1
+Cmd: preprocessCompute
+  insize=4346 outsize=4345 ok=1

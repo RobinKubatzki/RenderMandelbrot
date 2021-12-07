@@ -1,8 +1,7 @@
 ﻿#include "Assets/HLSL/lib.compute"
 
 
-#pragma kernel CSMain 
-#pragma target 5.0
+#pragma kernel CSMain
 
 const static float MIN_INTENSITY_OUTER_UNIT_CIRCLE = 0.01f;
 
@@ -118,10 +117,10 @@ float4 exeedingValueColoring(float2 polarCoord, float minimalExeeding, float max
             intp);
 }
 void markAsExceeded(uint3 id){
-    Result[id.xy] = float2(2.0f * bound,0);
+    Result[id.xy] = float2(2.0f*bound,0);
 }
 bool isExeeded(float2 val){
-    return val.x == 2.0f * bound;
+    return val.x == 2.0f*bound;
 }
 float2 skalarMult(float2 val, float skalar){
     val.x *= skalar;
@@ -132,7 +131,7 @@ float2 skalarMult(float2 val, float skalar){
 [numthreads(8,8,1)]
 void CSMain (uint3 id : SV_DispatchThreadID)
 {
-    float2 z = Result.Load(id.xy);//prevResult[id.xy];
+    float2 z = Result.Load(id.xy);
     if( isExeeded(z) )
         return;   
     //calc

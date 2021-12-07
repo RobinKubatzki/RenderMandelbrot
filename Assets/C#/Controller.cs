@@ -13,14 +13,19 @@ public class Controller : MonoBehaviour
     public float zoom = 2, boundExponent = 4; 
     public int colorPeriod = 10, iterationCnt = 0;
     public int pixelSampleSize = 4;
+    public int targetFps = 25;
 
 
     private RenderTexture mandelBrot, position, positionLength, mandelBrot_Result;
-    private int kernel_calc, kernel_init, width, height;
+    private int kernel_calc, kernel_init; 
+    private int width, height;
     private uint threadGrpSize_x, threadGrpSize_y;
     private int dispatch_width, dispatch_heigth;//shaders should have same ThreadGrpSize, so one of these is enought.
     private float currentIterationVal;
+    private int frameCnt = 0, calcPerFrame = 10;
+    private float timeCnt = 0;
     private bool debug_TexSettings = false, debug_iterationParams = false;
+
 
     float iterationVal(int cnt){
         float itLeft = Mathf.Cos( ((float)cnt-0.5f)*2.0f*Mathf.PI / (float)colorPeriod ) + 1;
@@ -116,8 +121,6 @@ public class Controller : MonoBehaviour
 
     void initSettings(){
         SettingsManager.applieSettings(this);
-        //manager.loadData();
-        //manager.applieSettings(this);
     }
 
     void Start()
@@ -131,15 +134,11 @@ public class Controller : MonoBehaviour
             Debug.Log("antialiasing:" + mandelBrot.antiAliasing);
             Debug.Log("anisoLevel:" + mandelBrot.anisoLevel);
         }
-        
     }
-
-    int frameCnt = 0;
-    public int calcPerFrame = 10;
-    float timeCnt = 0, targetFps = 25;
 
     void Update()
     {
+        //zoom in
         if(Input.GetMouseButtonDown(0)){
             Vector3 mousePos = Input.mousePosition;
             float ScreenPixels_x = Screen.width;
@@ -151,21 +150,24 @@ public class Controller : MonoBehaviour
             refreshMandelBrot();
             dispatch_init();
         }
+        //switch to Main Menu
         if(Input.GetKeyDown(KeyCode.Escape)){
             SceneManager.LoadScene(0);
         }
+        //iteration count:
+        //show 
         if(Input.GetKeyDown(KeyCode.I)){
             stateDisplay.enabled = true;
-            stateDisplay.text = ""+iterationCnt;
         }
+        //update
         if(Input.GetKey(KeyCode.I)){
             stateDisplay.text = ""+iterationCnt;
         }
+        //hide
         if(Input.GetKeyUp(KeyCode.I)){
             stateDisplay.enabled = false;
         }
-
-
+        //check fps
         timeCnt += Time.deltaTime;
         if(++frameCnt >= targetFps){
             float fps =  (float)frameCnt/timeCnt;
@@ -173,9 +175,9 @@ public class Controller : MonoBehaviour
             timeCnt = 0;
             frameCnt = 0;
         }
+        //calc
         for(int i = 0; i<calcPerFrame; i++){
             dispatch_calc();
-        }
-        
+        }     
     }
 }

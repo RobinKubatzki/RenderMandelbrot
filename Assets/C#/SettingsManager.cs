@@ -1,6 +1,5 @@
 ﻿using UnityEngine;	
 using UnityEngine.UI;
-using UnityEngine.Events;	
 using System;
 using System.Collections.Generic;
 using System.Runtime.Serialization.Formatters.Binary;
@@ -94,10 +93,9 @@ public class SettingsManager : MonoBehaviour
         } 
     }
     public static void applieSettings(Controller ctrl){
-        /*if(data == null){
+        if(data == null){
             loadData();
-        }*/
-        loadData();
+        }
         foreach(ParameterDependencies item in data.getParametersDependencies(null))
         {
             Debug.Log("set on controller: parameterName = " + item.paramMngr.getName());
@@ -128,7 +126,8 @@ public class SettingsData
         },
         new Vector2_Serialize(0,0));
     public ParameterItem<int> 
-        boundExponent = new ParameterItem<int>("Bound exponent", "a result of the mandelbrot function is considered as exeeded when it's length is bigger than 2 to the power of bound exponent",
+        boundExponent = new ParameterItem<int>("Bound exponent", "a result of the mandelbrot function is considered as exeeded when it's length is bigger than 2 to the power of bound exponent."
+            +"bound exponent should at least be 1",
             (Controller ctrl, int boundExponent)=>
             {
                 ctrl.boundExponent = boundExponent;

@@ -1,6 +1,4 @@
 ﻿using System;
-using UnityEngine.UI;
-using UnityEngine.Events;
 using UnityEngine;
 
 ///<summary>this class is intended to handel a Parameter and implements an interface <c cref="ParameterManager">ParameterManager</c>
@@ -11,7 +9,6 @@ public class ParameterItem<T> : ParameterManager
     private T data;
     private string name, detail;
 
-    //private UnityAction<Controller, T> setOnController;
     [Serializable]
     public delegate void SetOnController(Controller controller, T val);
     private SetOnController setOnController;
